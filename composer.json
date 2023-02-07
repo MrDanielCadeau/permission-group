@@ -1,5 +1,5 @@
 {
-    "name": "customfields/permissiongroup",
+    "name": "mrdanielcadeau/permissiongroup",
     "description": "A Laravel Nova Permission field which allows to group few BooleanGroup fields in one JSON field.",
     "keywords": [
         "laravel",
