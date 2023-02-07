@@ -1,0 +1,29 @@
+{
+    "name": "customfields/permissiongroup",
+    "description": "A Laravel Nova Permission field which allows to group few BooleanGroup fields in one JSON field.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Customfields\\PermissionGroup\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Customfields\\PermissionGroup\\FieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
