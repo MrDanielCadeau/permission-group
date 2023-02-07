@@ -1,6 +1,6 @@
 <?php
 
-namespace Customfields\PermissionGroup;
+namespace MrDanielCadeau;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
