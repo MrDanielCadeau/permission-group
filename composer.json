@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Customfields\\PermissionGroup\\": "src/"
+            "MrDanielCadeau\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Customfields\\PermissionGroup\\FieldServiceProvider"
+                "MrDanielCadeau\\FieldServiceProvider"
             ]
         }
     },
