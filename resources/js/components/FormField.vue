@@ -20,33 +20,21 @@
 
 <script>
 import {FormField, HandlesValidationErrors} from 'laravel-nova'
+import {formatChildren} from "../formatChildren"
 
 export default {
     mixins: [FormField, HandlesValidationErrors],
     props: ["field"],
     data: () => ({
-        value: '',
+        value: undefined,
         children: [],
     }),
 
     watch: {
         value: {
             handler(newValue) {
-                if(newValue?.length) {
-                    let children = this.field.children
-
-                    let values = (this.value !== '' ? JSON.parse(this.value) : null)
-                    let formatValues = {}
-                    if (values) {
-                        values.forEach(value => {
-                            formatValues[value] = true
-                        })
-                    }
-
-                    return this.children = children.map(child => {
-                        child.value = formatValues
-                        return child
-                    })
+                if(newValue!== undefined) {
+                    return this.children = formatChildren(newValue, this.field.children)
                 }
             },
             immediate: true

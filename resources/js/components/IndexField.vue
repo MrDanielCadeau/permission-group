@@ -1,5 +1,5 @@
 <template>
-    <ul v-if="value" class="permissions__grid__index">
+    <ul class="permissions__grid__index">
         <li v-for="(child, index) in children"
             :key="index">
             <p>{{ child.name }}</p>
@@ -13,32 +13,21 @@
 
 <script>
 import {FormField, HandlesValidationErrors} from 'laravel-nova'
+import {formatChildren} from "../formatChildren"
 
 export default {
     mixins: [FormField, HandlesValidationErrors],
     props: ["field"],
     data: () => ({
-        value: '',
+        value: undefined,
         children: [],
     }),
+
     watch: {
         value: {
-            handler(newValue) {
-                if(newValue?.length) {
-                    let children = this.field.children
-
-                    let values = (this.value !== '' ? JSON.parse(this.value) : null)
-                    let formatValues = {}
-                    if (values) {
-                        values.forEach(value => {
-                            formatValues[value] = true
-                        })
-                    }
-
-                    return this.children = children.map(child => {
-                        child.value = formatValues
-                        return child
-                    })
+            handler: function(newValue) {
+                if(newValue!== undefined) {
+                    return this.children = formatChildren(newValue, this.field.children)
                 }
             },
             immediate: true
@@ -61,7 +50,7 @@ export default {
 
 @media (min-width: 1024px) {
     .permissions__grid__index {
-        grid-template-columns: repeat(4, minmax(0, 1fr))!important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     }
 }
 
