@@ -1,6 +1,5 @@
 # PermissionGroup Field
 
-----------
 
 ## Prerequisites
 
@@ -115,4 +114,4 @@ Some example screenshots:
 
 --------
 
-early 2023
+2023
