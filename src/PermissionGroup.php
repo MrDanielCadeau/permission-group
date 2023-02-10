@@ -1,6 +1,6 @@
 <?php
 
-namespace MrDanielCadeau;
+namespace Daliendev;
 
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Http\Requests\NovaRequest;

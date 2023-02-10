@@ -1,6 +1,6 @@
 <?php
 
-namespace MrDanielCadeau;
+namespace Daliendev;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;

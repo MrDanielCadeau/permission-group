@@ -9,7 +9,7 @@
 ## Installation
 
 ```shell
-composer require mrdanielcadeau/permissiongroup
+composer require daliendev/permissiongroup
 ```
 
 ## Prepare your migrations
@@ -49,7 +49,7 @@ class CreateRolesTable extends Migration
 To use the PermissionGroup field in your Nova application, you need to add the field to your Nova resource. To do this, simply add the following code:
 
 ```php
-use MrDanielCadeau\PermissionGroup
+use Daliendev\PermissionGroup
 
 public function fields(Request $request)
 {

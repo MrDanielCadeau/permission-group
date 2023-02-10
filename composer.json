@@ -1,5 +1,5 @@
 {
-    "name": "mrdanielcadeau/permissiongroup",
+    "name": "daliendev/permissiongroup",
     "description": "A Laravel Nova Permission field which allows to group few BooleanGroup fields in one JSON field.",
     "keywords": [
         "laravel",
@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "MrDanielCadeau\\": "src/"
+            "Daliendev\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MrDanielCadeau\\FieldServiceProvider"
+                "Daliendev\\FieldServiceProvider"
             ]
         }
     },
