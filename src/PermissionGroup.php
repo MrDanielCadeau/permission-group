@@ -80,6 +80,8 @@ class PermissionGroup extends BooleanGroup
 
     private function formatOptions(string $name, array $permissions, bool $displayName = true): array
     {
+        $name = $this->convertPascalToSnakeCase($name);
+
         $options = [];
         foreach ($permissions as $key => $permission) {
             $options[strtolower($key . '_' . $name)] = ($displayName)
@@ -88,6 +90,11 @@ class PermissionGroup extends BooleanGroup
         }
 
         return $options;
+    }
+
+    private function convertPascalToSnakeCase($v): string
+    {
+        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $v)), '_');
     }
 
     /**

@@ -1,13 +1,21 @@
 {
     "name": "daliendev/permissiongroup",
-    "description": "A Laravel Nova Permission field which allows to group few BooleanGroup fields in one JSON field.",
+    "description": "Permission Group for Laravel Nova allows for the management of various permission values within a single JSON column.",
+    "type": "package",
     "keywords": [
         "laravel",
         "nova"
     ],
+    "authors": [
+        {
+            "name": "Daniel CADEAU",
+            "email": "contact@dcadeau.tech"
+        }
+    ],
     "license": "MIT",
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "laravel/nova": "^4.0"
     },
     "autoload": {
         "psr-4": {
