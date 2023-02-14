@@ -9,6 +9,7 @@
                 :key="index">
                 <component
                     :is="`form-${child.component}`"
+                    :key="child.value"
                     :field="child"
                     :show-help-text=true
                     @change="syncValue($event)"
@@ -21,20 +22,24 @@
 <script>
 import {FormField, HandlesValidationErrors} from 'laravel-nova'
 import {formatChildren} from "../formatChildren"
+import {getSelectedValues} from "../getSelectedValues"
 
 export default {
     mixins: [FormField, HandlesValidationErrors],
     props: ["field"],
+
     data: () => ({
         value: undefined,
+        values: [],
         children: [],
     }),
 
     watch: {
         value: {
             handler(newValue) {
-                if(newValue!== undefined) {
-                    return this.children = formatChildren(newValue, this.field.children)
+                if (newValue !== undefined) {
+                    this.setValues(newValue)
+                    this.setChildren()
                 }
             },
             immediate: true
@@ -48,19 +53,63 @@ export default {
     },
 
     methods: {
+        setValues(v) {
+            this.values = (v !== '' ? JSON.parse(v) : [])
+        },
+
+        setChildren() {
+            const temp_children = this.children.length > 0 ? this.children : this.field.children
+            this.children = formatChildren(this.values, temp_children)
+        },
+
         syncValue(e) {
             const checkbox = e.target?.attributes?.name?.value
-            const arr = this.value?.length < 1 ? [] : JSON.parse(this.value)
-            const i = arr.indexOf(checkbox);
+            if (checkbox.includes('select_all')) return this.addGroupToValue(checkbox)
+            else return this.addOneToValue(checkbox)
+        },
+
+        addOneToValue(v) {
+            const arr = this.values
+            const i = arr.indexOf(v)
             if (i > -1) {
                 arr.splice(i, 1)
             } else {
-                arr.push(checkbox)
+                arr.push(v)
             }
             this.value = JSON.stringify(arr)
         },
+
+        forceAdd(v) {
+            const arr = this.values
+            arr.push(v)
+            this.value = JSON.stringify(arr)
+        },
+
+        forceRemove(v) {
+            const arr = this.values
+            const i = arr.indexOf(v)
+            if (i > -1) {
+                arr.splice(i, 1)
+            }
+            this.value = JSON.stringify(arr)
+        },
+
+        addGroupToValue(v) {
+            const groupName = v.replace('select_all_', '')
+            const group = this.children.filter(child => child.attribute === groupName)[0]
+            let selectedValues = getSelectedValues(this.values, groupName)
+            let selectedAll = (selectedValues.length === group.options.length - 1)
+
+            group.options.forEach(option => {
+                if (!option.name.includes('select_all')) {
+                    let value = option.name
+                    this.forceRemove(value)
+                    if(!selectedAll) this.forceAdd(value)
+                }
+            })
+        },
     },
-};
+}
 </script>
 
 <style>
@@ -68,5 +117,9 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-gap: 16px;
+}
+
+input[type='checkbox'] {
+    margin-right: 0.5rem!important;
 }
 </style>

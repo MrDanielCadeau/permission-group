@@ -20,14 +20,16 @@ export default {
     props: ["field"],
     data: () => ({
         value: undefined,
+        values: [],
         children: [],
     }),
 
     watch: {
         value: {
-            handler: function(newValue) {
-                if(newValue!== undefined) {
-                    return this.children = formatChildren(newValue, this.field.children)
+            handler: function (newValue) {
+                if (newValue !== undefined) {
+                    this.setValues(newValue)
+                    this.setChildren()
                 }
             },
             immediate: true
@@ -37,6 +39,17 @@ export default {
     computed: {
         name() {
             return this.field.name
+        },
+    },
+
+    methods: {
+        setValues(v) {
+            this.values = (v !== '' ? JSON.parse(v) : [])
+        },
+
+        setChildren() {
+            const temp_children = this.children.length > 0 ? this.children : this.field.children
+            this.children = formatChildren(this.values, temp_children)
         },
     },
 };

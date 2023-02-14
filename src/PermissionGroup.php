@@ -57,7 +57,8 @@ class PermissionGroup extends BooleanGroup
         $permissions = array_merge($this->crud_permissions, $customPermissions);
         $options = $this->formatOptions($resource_name, $permissions);
 
-        $booleanGroup = BooleanGroup::make($resource_name)->options($options);
+        $booleanGroup = BooleanGroup::make($resource_name, $this->convertPascalToSnakeCase($resource_name))
+            ->options($options);
 
         $this->fields[] = $booleanGroup;
         return $this->withMeta(['children' => $this->fields]);
@@ -72,7 +73,8 @@ class PermissionGroup extends BooleanGroup
     public function with(string $custom_name, array $customPermissions): PermissionGroup
     {
         $options = $this->formatOptions($custom_name, $customPermissions, false);
-        $booleanGroup = BooleanGroup::make($custom_name)->options($options);
+        $booleanGroup = BooleanGroup::make($custom_name, $this->convertPascalToSnakeCase($custom_name))
+            ->options($options);
 
         $this->fields[] = $booleanGroup;
         return $this->withMeta(['children' => $this->fields]);
