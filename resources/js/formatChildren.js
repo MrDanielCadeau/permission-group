@@ -1,6 +1,6 @@
 import {getSelectedValues} from "./getSelectedValues"
 
-export function formatChildren(values, children) {
+export function formatChildren(values, children, select_all = true) {
     return children.map(child => {
         let formatValues = {}
         let selectedValues = getSelectedValues(values, child.attribute)
@@ -16,7 +16,7 @@ export function formatChildren(values, children) {
             || child.options.length === selectedValues.length + 1
         )
 
-        if (child.options.filter(option => option.name === select_all_input).length === 0) {
+        if (select_all && child.options.filter(option => option.name === select_all_input).length === 0) {
             child.options.unshift({
                 label: 'Select all',
                 name: select_all_input,

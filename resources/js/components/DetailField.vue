@@ -54,7 +54,7 @@ export default {
 
         setChildren() {
             const temp_children = this.children.length > 0 ? this.children : this.field.children
-            this.children = formatChildren(this.values, temp_children)
+            this.children = formatChildren(this.values, temp_children, false)
         },
     },
 };
