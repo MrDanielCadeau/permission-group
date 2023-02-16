@@ -17,7 +17,7 @@ export function formatChildren(values, children) {
         )
 
         if (child.options.filter(option => option.name === select_all_input).length === 0) {
-            child.options.push({
+            child.options.unshift({
                 label: 'Select all',
                 name: select_all_input,
             })

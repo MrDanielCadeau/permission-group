@@ -2,6 +2,7 @@
 
 namespace Daliendev;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -47,17 +48,18 @@ class PermissionGroup extends BooleanGroup
      * Set BooleanGroup based on the resource name
      * @param string $resource
      * @param array $customPermissions
+     * @param bool $withoutCrudPermissions
      * @return PermissionGroup
      */
-    public function on(string $resource, array $customPermissions = []): PermissionGroup
+    public function on(string $resource, array $customPermissions = [], bool $withoutCrudPermissions = false): PermissionGroup
     {
         preg_match('/\b(\w+)$/', $resource, $matches);
         $resource_name = (count($matches)) ? $matches[0] : null;
 
-        $permissions = array_merge($this->crud_permissions, $customPermissions);
+        $permissions = array_merge((!$withoutCrudPermissions) ? $this->crud_permissions : [], $customPermissions);
         $options = $this->formatOptions($resource_name, $permissions);
 
-        $booleanGroup = BooleanGroup::make($resource_name, $this->convertPascalToSnakeCase($resource_name))
+        $booleanGroup = BooleanGroup::make(Str::headline($resource_name), Str::snake($resource_name))
             ->options($options);
 
         $this->fields[] = $booleanGroup;
@@ -73,7 +75,7 @@ class PermissionGroup extends BooleanGroup
     public function with(string $custom_name, array $customPermissions): PermissionGroup
     {
         $options = $this->formatOptions($custom_name, $customPermissions, false);
-        $booleanGroup = BooleanGroup::make($custom_name, $this->convertPascalToSnakeCase($custom_name))
+        $booleanGroup = BooleanGroup::make(Str::headline($custom_name), Str::snake($custom_name))
             ->options($options);
 
         $this->fields[] = $booleanGroup;
@@ -82,7 +84,7 @@ class PermissionGroup extends BooleanGroup
 
     private function formatOptions(string $name, array $permissions, bool $displayName = true): array
     {
-        $name = $this->convertPascalToSnakeCase($name);
+        $name = Str::snake($name);
 
         $options = [];
         foreach ($permissions as $key => $permission) {
@@ -92,11 +94,6 @@ class PermissionGroup extends BooleanGroup
         }
 
         return $options;
-    }
-
-    private function convertPascalToSnakeCase($v): string
-    {
-        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $v)), '_');
     }
 
     /**
@@ -111,9 +108,8 @@ class PermissionGroup extends BooleanGroup
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute): void
     {
         if ($request->exists($requestAttribute)) {
-            $model->{$attribute} = json_decode($request[$requestAttribute], true);
+            $model->{$attribute} = $request[$requestAttribute];
         }
     }
-
 
 }
